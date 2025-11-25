@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Evita el Obstáculo</title>
+<style>
+    body {
+        background: #222;
+        color: white;
+        text-align: center;
+        font-family: Arial;
+    }
+    #juego {
+        width: 400px;
+        height: 500px;
+        background: #333;
+        margin: auto;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid #fff;
+        margin-top: 20px;
+    }
+    #jugador {
+        width: 60px;
+        height: 60px;
+        background: cyan;
+        position: absolute;
+        bottom: 10px;
+        left: 170px;
+    }
+    #obstaculo {
+        width: 50px;
+        height: 50px;
+        background: red;
+        position: absolute;
+        top: -60px;
+        left: 170px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Evita el Obstáculo</h1>
+<p>Usa ← → para moverte</p>
+
+<div id="juego">
+    <div id="jugador"></div>
+    <div id="obstaculo"></div>
+</div>
+
+<script>
+    const jugador = document.getElementById("jugador");
+    const obstaculo = document.getElementById("obstaculo");
+    const juego = document.getElementById("juego");
+
+    let posJugador = 170;
+    let posObstaculo = -60;
+
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "ArrowLeft" && posJugador > 0) posJugador -= 20;
+        if (e.key === "ArrowRight" && posJugador < 340) posJugador += 20;
+        jugador.style.left = posJugador + "px";
+    });
+
+  
+    setInterval(() => {
+        posObstaculo += 15;
+        obstaculo.style.top = posObstaculo + "px";
+
+
+        if (posObstaculo > 500) {
+            posObstaculo = -50;
+            obstaculo.style.left = Math.floor(Math.random() * 350) + "px";
+        }
+
+
+        const jRect = jugador.getBoundingClientRect();
+        const oRect = obstaculo.getBoundingClientRect();
+
+        if (!(jRect.right < oRect.left ||
+              jRect.left > oRect.right ||
+              jRect.bottom < oRect.top ||
+              jRect.top > oRect.bottom)) {
+            alert("¡Perdiste!");
+            posObstaculo = -60;
+        }
+
+    }, 30);
+</script>
+
+</body>
+</html>
